@@ -1,0 +1,18 @@
+
+.casillas {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    font-size: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+}
+
+.contenedor{
+    margin: 0 auto;
+    width: 240px;
+    height: 240px;
+}

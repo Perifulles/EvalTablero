@@ -62,6 +62,8 @@ session_start();
 </html>
 <?php
 
+//ESCRIBE AQUÍ TU PROGRAMA PRINCIPAL
+
 $tablero = [
     [],
     [],
@@ -71,46 +73,132 @@ $tablero = [
     []
 ];
 
-for ($i=0; $i<6 ; $i++){
-    $numeros = range(1, 6);
-    shuffle($numeros);
-    $tablero[$i][0]=$numeros;
-    for ($o=0; $i<6 ; $o++){
-        switch($tablero[$i][0]){
-            case"1":
-                $tablero[$i][0][$o]= "WH"; break;
-            case"2":
-                $tablero[$i][0][$o]= "BK"; break;
-            case"3":
-                $tablero[$i][0][$o]= "BL"; break;
-            case"4":
-                $tablero[$i][0][$o]= "GR"; break;
-            case"5":
-                $tablero[$i][0][$o]= "YE"; break;
-            case"6":
-                $tablero[$i][0][$o]= "RE"; break;
-        }}
-}
-
-for ($i=0; $i<6 ; $i++){
-    $numeros = range(1, 6);
-    shuffle($numeros);
-    $tablero[$i][1]=$numeros;
-}
-
-var_dump($tablero);
-
-
-//ESCRIBE AQUÍ TU PROGRAMA PRINCIPAL
+//* Para que se guarde el tablero
+//* $_SESSION['tablero'] = $tablero;
+//* $tablero = isset($_SESSION['tablero']) ? $_SESSION['tablero'] : $tablero = createtablero();
 
 
 
-$tablero = isset($_SESSION['tablero']) ? $_SESSION['tablero'] : $tablero;
-
-
-
+$tablero = createtablerobien();
+showcolor($tablero);
 
 //ESCRIBE AQUÍ LA DEFINICIÓN DE LAS FUNCIONES
 
+//Este tablero crea filas aleatorias por lo que nunca coincidirán colores o numeros en la misma fila
+function createtablero(){
+    for ($i=0; $i<6 ; $i++){
+        $numeros = range(1, 6);
+        shuffle($numeros);
+        $tablero[$i][0]=$numeros;
+        for ($o=0; $o<6 ; $o++){
+            switch($tablero[$i][0][$o]){
+                case"1":
+                    $tablero[$i][0][$o]= "WH"; break;
+                case"2":
+                    $tablero[$i][0][$o]= "BK"; break;
+                case"3":
+                    $tablero[$i][0][$o]= "BL"; break;
+                case"4":
+                    $tablero[$i][0][$o]= "GR"; break;
+                case"5":
+                    $tablero[$i][0][$o]= "YE"; break;
+                case"6":
+                    $tablero[$i][0][$o]= "RE"; break;
+            }}
+    }
+
+    for ($i=0; $i<6 ; $i++){
+        $numeros = range(1, 6);
+        shuffle($numeros);
+        $tablero[$i][1]=$numeros;
+    }
+
+    return($tablero);
+}
+
+
+//Sin embargo en esta función he realizado un array con los 36 numeros y luego los he mezclado aleatoriamente.
+function createtablerobien(){
+    $contco = 0;
+    $contnu = 0;
+    $numeros36 = [];
+
+    for ($i = 0; $i < 6; $i++) {
+        for ($o = 0; $o < 6; $o++) {
+            array_push($numeros36, $o + 1);
+        }
+    }
+    shuffle($numeros36);
+
+        for ($i=0; $i<6 ; $i++){
+            for ($o=0; $o<6 ; $o++){
+            switch($numeros36[$contco]){
+                    case"1":
+                        $tablero[$i][0][$o]= "WH"; break;
+                    case"2":
+                        $tablero[$i][0][$o]= "BK"; break;
+                    case"3":
+                        $tablero[$i][0][$o]= "BL"; break;
+                    case"4":
+                        $tablero[$i][0][$o]= "GR"; break;
+                    case"5":
+                        $tablero[$i][0][$o]= "YE"; break;
+                    case"6":
+                        $tablero[$i][0][$o]= "RE"; break;
+                }
+                $contco ++;
+            }}
+
+    $numeros36 = [];
+
+    for ($i=0; $i<6 ; $i++){
+        for ($o=0; $o<6 ; $o++){
+            array_push($numeros36, $o + 1);
+            }}
+            shuffle($numeros36);
+
+    for ($i=0; $i<6 ; $i++){
+        for ($o=0; $o<6 ; $o++){
+            $tablero[$i][1][$o] =  $numeros36[$contnu];
+            $contnu ++;
+        }
+    }
+
+    return($tablero);
+
+}
+
+
+function show($array3d){
+    for($i=0;$i<6;$i++){
+        for($o=0;$o<6;$o++){
+        echo $array3d[$i][0][$o];
+        echo $array3d[$i][1][$o] . ",";
+        }echo "<br>";
+    }
+}
+
+function showcolor($array3d){
+    echo"<div class='contenedor'>";
+    for($i=0;$i<6;$i++){
+        for($o=0;$o<6;$o++){
+        switch($array3d[$i][0][$o]){
+            case"WH":
+                echo "<span class='casillas' style='background-color:white; color:black'>" . $array3d[$i][1][$o] . "</span>";break;
+            case"BK":
+                echo "<span class='casillas' style='background-color:black'>" . $array3d[$i][1][$o] . "</span>";break;
+            case"BL":
+                echo "<span class='casillas' style='background-color:blue'>" . $array3d[$i][1][$o] . "</span>";break;
+            case"GR":
+                echo "<span class='casillas' style='background-color:green'>" . $array3d[$i][1][$o] . "</span>";break;
+            case"RE":
+                echo "<span class='casillas' style='background-color:red'>" . $array3d[$i][1][$o] . "</span>";break;
+            case"YE":
+                echo "<span class='casillas' style='background-color:yellow; color:black'>" . $array3d[$i][1][$o] . "</span>";break;
+            }
+        }echo "<br>";
+    }
+    echo"</div>";
+}
 
 ?>
