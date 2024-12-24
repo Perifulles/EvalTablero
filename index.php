@@ -1,6 +1,4 @@
-<?php
-session_start();
-?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +77,15 @@ $tablero = [
 
 
 
-$tablero = createtablerobien();
+// Verifica si el tablero ya está guardado en la sesión
+if (!isset($_SESSION['tablero'])) {
+    // Si no existe, crea un nuevo tablero y lo guarda en la sesión
+    $_SESSION['tablero'] = createtablerocomplejo();
+}
+
+// Obtén el tablero desde la sesión
+$tablero = $_SESSION['tablero'];
+
 showcolor($tablero);
 
 //ESCRIBE AQUÍ LA DEFINICIÓN DE LAS FUNCIONES
@@ -116,8 +122,8 @@ function createtablero(){
     return($tablero);
 }
 
-
 //Sin embargo en esta función he realizado un array con los 36 numeros y luego los he mezclado aleatoriamente.
+//El problema es que los colores tambien los pone totalmente aleatorios por lo que puede haber 2 6s iguales.
 function createtablerobien(){
     $contco = 0;
     $contnu = 0;
@@ -166,6 +172,69 @@ function createtablerobien(){
 
     return($tablero);
 
+}
+
+function createtablerocomplejo(){
+    $contco = 0;
+    $contnu = 0;
+    $numeros36 = [];
+
+    for ($i=0; $i<6 ; $i++){
+        for ($o=0; $o<6 ; $o++){
+            array_push($numeros36, $o + 1);
+            }}
+            shuffle($numeros36);
+
+    for ($i=0; $i<6 ; $i++){
+        for ($o=0; $o<6 ; $o++){
+            $tablero[$i][1][$o] =  $numeros36[$contnu];
+            $contnu ++;
+        }
+    }
+
+
+    $numeros36c = [];
+
+    for ($i=0; $i<6 ; $i++){
+        for ($o=0; $o<6 ; $o++){
+            array_push($numeros36c, $o + 1);
+            }}
+            shuffle($numeros36c);
+
+    $conteoBlancos = [];
+    $conteoAzules = [];
+    $conteoVerdes = [];
+    $conteoAmarillos = [];
+    $conteoNegros = [];
+    $conteoRojos = [];
+
+        for ($i=0; $i<6 ; $i++){
+            for ($o=0; $o<6 ; $o++){
+                if ($numeros36c[$contco] == 1 && !isset($conteoBlancos["blanco" . $numeros36[$contco]])) {
+                    $tablero[$i][0][$o] = "WH";
+                    $conteoBlancos["blanco" . $numeros36[$contco]] = true;
+                } elseif ($numeros36c[$contco] == 2 && !isset($conteoNegros["negro" . $numeros36[$contco]])) {
+                    $tablero[$i][0][$o] = "BK";
+                    $conteoNegros["negro" . $numeros36[$contco]] = true;
+                } elseif ($numeros36c[$contco] == 3 && !isset($conteoAzules["azul" . $numeros36[$contco]])) {
+                    $tablero[$i][0][$o] = "BL";
+                    $conteoAzules["azul" . $numeros36[$contco]] = true;
+                } elseif ($numeros36c[$contco] == 4 && !isset($conteoVerdes["verde" . $numeros36[$contco]])) {
+                    $tablero[$i][0][$o] = "GR";
+                    $conteoVerdes["verde" . $numeros36[$contco]] = true;
+                } elseif ($numeros36c[$contco] == 5 && !isset($conteoAmarillos["amarillo" . $numeros36[$contco]])) {
+                    $tablero[$i][0][$o] = "YE";
+                    $conteoAmarillos["amarillo" . $numeros36[$contco]] = true;
+                } elseif ($numeros36c[$contco] == 6 && !isset($conteoRojos["rojo" . $numeros36[$contco]])) {
+                    $tablero[$i][0][$o] = "RE";
+                    $conteoRojos["rojo" . $numeros36[$contco]] = true;
+                }
+                elseif($numeros36c[$contco] == 6){$numeros36c[$contco] = $numeros36c[$contco] - 5 ; $o --; $contco --;}
+                else{$numeros36c[$contco] = $numeros36c[$contco] + 1 ; $o --; $contco --;}
+                $contco ++;
+                }
+            }
+    return($tablero);
 }
 
 
